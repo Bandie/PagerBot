@@ -75,9 +75,10 @@ readbuffer=""
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 ircsock = ssl.wrap_socket(s)
-ircsock.send("NICK %s\r\n" % NICK)
+ircsock.send("NICK %s\r\n" % (NICK))
 ircsock.send("USER %s %s no :%s\r\n" % (IDENT, HOST, REALNAME))
 time.sleep(2)
+ircsock.send("MODE %s +B\r\n" %(NICK))
 ircsock.send("JOIN %s\r\n" % (CHAN))
 print("OK\n")
 
