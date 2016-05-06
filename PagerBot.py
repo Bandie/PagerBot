@@ -102,9 +102,10 @@ while 1:
             un=None
             un2=None
             if(line[3] == ":help"):
-                ircsock.send("PRIVMSG %s This is a bot to use a paging service.\r\n" % usernick)
+                ircsock.send("PRIVMSG %s This is a bot to use a paging service.\r\n" % (usernick))
                 time.sleep(1)
-                ircsock.send("PRIVMSG %s Use \"&pager <Username> <Message>\" to page someone.\r\n" % usernick)
+                ircsock.send("PRIVMSG %s Use \"/msg %s &pager <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
+                
 
             elif(line[3] == ":&pager"):
                 pagingtext=' '.join(line[5:])
