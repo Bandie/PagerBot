@@ -93,14 +93,22 @@ while 1:
         line=string.rstrip(line)
         line=string.split(line)
 
+        un=string.split(line[0], "!")
+        un2=string.split(un[0], ":")
+        usernick=un2[1]
+
+        channel=line[2]
+                        
+
+
         if(line[0]=="PING"):
             ircsock.send("PONG %s\r\n" % line[1])
+        
+        if(line[1]=="PRIVMSG" and "#" in line[2]):
+            if(line[3] == ":%s:" % (NICK) or line[3] == ":&pager"):
+                ircsock.send("PRIVMSG %s %s: I only do stuff via query.\r\n" % (channel, usernick))
+
         if(line[1]=="PRIVMSG" and "#" not in line[2]):
-            un=string.split(line[0], "!")
-            un2=string.split(un[0], ":")
-            usernick=un2[1]
-            un=None
-            un2=None
             if(line[3] == ":help"):
                 ircsock.send("PRIVMSG %s This is a bot to use a paging service.\r\n" % (usernick))
                 time.sleep(1)
