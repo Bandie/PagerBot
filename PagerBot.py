@@ -93,32 +93,29 @@ while 1:
         line=string.rstrip(line)
         line=string.split(line)
 
-        un=string.split(line[0], "!")
-        un2=string.split(un[0], ":")
-        usernick=un2[1]
-
-        channel=line[2]
-                        
 
 
         if(line[0]=="PING"):
             ircsock.send("PONG %s\r\n" % line[1])
-        
-        if(line[1]=="PRIVMSG" and "#" in line[2]):
-            if(line[3] == ":%s:" % (NICK) or line[3] == ":&pager"):
-                ircsock.send("PRIVMSG %s %s: I only do stuff via query.\r\n" % (channel, usernick))
 
-        if(line[1]=="PRIVMSG" and "#" not in line[2]):
-            if(line[3] == ":help"):
-                ircsock.send("PRIVMSG %s This is a bot to use a paging service.\r\n" % (usernick))
-                time.sleep(1)
-                ircsock.send("PRIVMSG %s Use \"/msg %s &pager <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
-                
+        if(line[1]=="PRIVMSG"):
+            un=string.split(line[0], "!")
+            un2=string.split(un[0], ":")
+            usernick=un2[1]
 
-            elif(line[3] == ":&pager"):
-                pagingtext=' '.join(line[5:])
-                print("%s sends to %s \"%s\"\n" % (usernick, line[4], pagingtext))
-                ircsock.send("PRIVMSG %s %s\r\n" % (usernick, page(line[4], pagingtext, usernick)))
+            if("#" in line[2]):
+                if(line[3] == ":%s:" % (NICK) or line[3] == ":&pager"):
+                    ircsock.send("PRIVMSG %s %s: I only do stuff via query.\r\n" % (line[2], usernick))
+
+            if("#" not in line[2]):
+                if(line[3] == ":help"): 
+                    ircsock.send("PRIVMSG %s This is a bot to use a paging service.\r\n" % (usernick))
+                    time.sleep(1)
+                    ircsock.send("PRIVMSG %s Use \"/msg %s &pager <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
+                elif(line[3] == ":&pager"):
+                    pagingtext=' '.join(line[5:])
+                    print("%s tries to send to %s \"%s\"\n" % (usernick, line[4], pagingtext))
+                    ircsock.send("PRIVMSG %s %s\r\n" % (usernick, page(line[4], pagingtext, usernick)))
 
 
 #    print(line)
