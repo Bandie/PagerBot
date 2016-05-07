@@ -115,7 +115,8 @@ while 1:
                     pagingtext=' '.join(line[5:])
                     print("%s tries to send to %s \"%s\"\n" % (usernick, line[4], pagingtext))
                     ircsock.send("PRIVMSG %s %s\r\n" % (usernick, page(line[4], pagingtext, usernick)))
-
+                elif(line[3] == ":&phonebook"):
+                    ircsock.send("PRIVMSG %s %s\r\n" % (usernick, phonebook.keys()))
 
 #    print(line)
 
