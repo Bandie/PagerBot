@@ -17,7 +17,7 @@ NICK = "PagerBot"
 # Ident of the bot
 IDENT = "PagerBot"
 # Realname of the bot
-REALNAME = "PagerBot"
+REALNAME = "https://github.com/TTYgap/PagerBot/"
 # Channel which should be joined
 CHAN = "#supercoolchan"
 
