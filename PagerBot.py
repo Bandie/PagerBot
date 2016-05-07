@@ -101,7 +101,7 @@ while 1:
                         "PRIVMSG %s %s: I only do stuff via query. Try \"/msg %s help\".\r\n" % (line[2], usernick, NICK))
 
             if("#" not in line[2]):
-                if(line[3] == ":help"):
+                if(line[3].lower() == ":help"):
                     ircsock.send(
                         "PRIVMSG %s This is a bot to use a paging service.\r\n" % (usernick))
                     time.sleep(0.5)
@@ -113,13 +113,13 @@ while 1:
                     time.sleep(0.5)
                     ircsock.send(
                         "PRIVMSG %s Call %s if you want to add yourself to the pager phonebook.\r\n" % (usernick, OWNERNAME))
-                elif(line[3] == ":&pager"):
+                elif(line[3].lower() == ":&pager"):
                     pagingtext = ' '.join(line[5:])
                     print("%s tries to send to %s \"%s\"\n" %
                           (usernick, line[4], pagingtext))
                     ircsock.send("PRIVMSG %s %s\r\n" %
                                  (usernick, page(line[4], pagingtext, usernick)))
-                elif(line[3] == ":&phonebook"):
+                elif(line[3].lower() == ":&phonebook"):
                     ircsock.send("PRIVMSG %s %s\r\n" %
                                  (usernick, phonebook.keys()))
 
