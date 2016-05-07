@@ -44,6 +44,8 @@ def page(receiver, text, user):
 
 #    if(receiver=="someone"):
 #        number="1234567"
+#    elif(receiver=="someoneelse"):
+#        number="7654321"
 
     else:
         return "The username you tried to page has no number saved."
