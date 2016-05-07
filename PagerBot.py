@@ -6,7 +6,8 @@
 #
 # Software is provided AS IS and so on.
 
-
+# The responsible being. (Nickname)
+OWNERNAME = "Melli17"
 # Host of the IRC server
 HOST = "irc.example.com"
 # TLS port of the IRC server
@@ -51,7 +52,7 @@ def page(receiver, text, user):
     to = number + "@ecityruf.de"
     message = HOST + ":" + user + ":" + text
     if(len(message) > 80):
-        return "The message \"%s\" is too big. It has to be less than 80 characters.\r\n" % (message)
+        return "The message \"%s\" is too big. It has to be less than 80 characters." % (message)
     m = smtplib.SMTP('smtpgw3.emessage.de')
     try:
         m.sendmail(FROM, to, "FROM: %s\nTO: %s\nSUBJECT: %s" %
@@ -97,15 +98,21 @@ while 1:
             if("#" in line[2]):
                 if(line[3] == ":%s:" % (NICK) or line[3] == ":&pager"):
                     ircsock.send(
-                        "PRIVMSG %s %s: I only do stuff via query.\r\n" % (line[2], usernick))
+                        "PRIVMSG %s %s: I only do stuff via query. Try \"/msg %s help\".\r\n" % (line[2], usernick, NICK))
 
             if("#" not in line[2]):
                 if(line[3] == ":help"):
                     ircsock.send(
                         "PRIVMSG %s This is a bot to use a paging service.\r\n" % (usernick))
-                    time.sleep(1)
+                    time.sleep(0.5)
+                    ircsock.send(
+                        "PRIVMSG %s Use \"/msg %s &phonebook\" to list all beings in the phonebook.\r\n" % (usernick, NICK))
+                    time.sleep(0.5)
                     ircsock.send(
                         "PRIVMSG %s Use \"/msg %s &pager <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
+                    time.sleep(0.5)
+                    ircsock.send(
+                        "PRIVMSG %s Call %s if you want to add yourself to the pager phonebook.\r\n" % (usernick, OWNERNAME))
                 elif(line[3] == ":&pager"):
                     pagingtext = ' '.join(line[5:])
                     print("%s tries to send to %s \"%s\"\n" %
