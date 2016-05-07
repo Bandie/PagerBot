@@ -33,20 +33,17 @@ import time
 import smtplib
 
 
+phonebook = {}
 
+# CONFIGURE YOUR USERS HERE
+
+# phonebook["someone"] = "123456"
+# phonebook["someoneelse"] = "7654321"
 
 def page(receiver, text, user):
 
-    number=""
-
-
-    # CONFIGURE YOUR USERS HERE
-
-#    if(receiver=="someone"):
-#        number="1234567"
-#    elif(receiver=="someoneelse"):
-#        number="7654321"
-
+    if receiver in phonebook:
+        number = phonebook[receiver]
     else:
         return "The username you tried to page has no number saved."
 
