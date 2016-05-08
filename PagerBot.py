@@ -42,15 +42,20 @@ phonebook = {}
 # phonebook["someoneelse"] = "7654321"
 
 
-def page(receiver, text, user):
+def page(receiver, text, user, urgent):
 
     if receiver in phonebook:
         number = phonebook[receiver]
     else:
-        return "The username you tried to page has no number saved."
+        return "This user doesn't exist in the phonebook."
 
     to = number + "@ecityruf.de"
-    message = HOST + ":" + user + ":" + text
+
+    if(urgent):
+        message = "U " + HOST + ":" + user + ":" + text
+    else:
+        message = HOST + ":" + user + ":" + text
+
     if(len(message) > 80):
         return "The message \"%s\" is too big. It has to be less than 80 characters." % (message)
     m = smtplib.SMTP('smtpgw3.emessage.de')
@@ -82,6 +87,7 @@ while 1:
     readbuffer = temp.pop()
 
     pagingtext = ""
+    urgence = False
 
     for line in temp:
         line = string.rstrip(line)
@@ -109,16 +115,26 @@ while 1:
                         "PRIVMSG %s Use \"/msg %s &phonebook\" to list all beings in the phonebook.\r\n" % (usernick, NICK))
                     time.sleep(0.5)
                     ircsock.send(
-                        "PRIVMSG %s Use \"/msg %s &pager <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
+                        "PRIVMSG %s Use \"/msg %s &pager (urgent) <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
                     time.sleep(0.5)
                     ircsock.send(
                         "PRIVMSG %s Call %s if you want to add yourself to the pager phonebook.\r\n" % (usernick, OWNERNAME))
+
                 elif(line[3].lower() == ":&pager"):
-                    pagingtext = ' '.join(line[5:])
-                    print("%s tries to send to %s \"%s\"\n" %
-                          (usernick, line[4], pagingtext))
-                    ircsock.send("PRIVMSG %s %s\r\n" %
-                                 (usernick, page(line[4], pagingtext, usernick)))
+                    if(line[4].lower() == "urgent"):
+                        urgence = True
+                        pagingtext = ' '.join(line[6:])
+                        print("%s tries to send %s to \"%s\" in URGENCE.\n" % 
+                            (usernick, line[5], pagingtext))
+                        ircsock.send("PRIVMSG %s %s\r\n" %
+                            (usernick, page(line[5], pagingtext, usernick, urgence)))
+                    else:
+                        pagingtext = ' '.join(line[5:])
+                        print("%s tries to send to %s \"%s\"\n" %
+                            (usernick, line[4], pagingtext))
+                        ircsock.send("PRIVMSG %s %s\r\n" %
+                            (usernick, page(line[4], pagingtext, usernick, urgence)))
+
                 elif(line[3].lower() == ":&phonebook"):
                     ircsock.send("PRIVMSG %s %s\r\n" %
                                  (usernick, phonebook.keys()))
