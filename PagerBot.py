@@ -137,6 +137,10 @@ while 1:
 
                 elif(line[3].lower() == ":&phonebook"):
                     ircsock.send("PRIVMSG %s %s\r\n" %
-                                 (usernick, phonebook.keys()))
+                        (usernick, phonebook.keys()))
+
+                else:
+                    ircsock.send("PRIVMSG %s Unknown command. Type \"/msg %s help\" for more information.\r\n" % 
+                        (usernick, NICK))
 
 #    print(line)
