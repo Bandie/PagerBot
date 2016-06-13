@@ -7,7 +7,7 @@
 # Software is provided AS IS and so on.
 
 # The responsible being. (Nickname)
-OWNERNAME = "Melli17"
+OWNERNAME = "melli17"
 # Host of the IRC server
 HOST = "irc.example.com"
 # TLS port of the IRC server
