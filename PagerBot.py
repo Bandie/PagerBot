@@ -66,7 +66,7 @@ def page(receiver, text, user, urgent):
         e = sys.exc_info()[0]
         return "Error: %s" % e
     m.quit()
-    return "Sent."
+    return "Sent: \"%s\"" % (message)
 
 
 readbuffer = ""
