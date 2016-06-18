@@ -116,6 +116,15 @@ while 1:
                     time.sleep(0.5)
                     ircsock.send(
                         "PRIVMSG %s Use \"/msg %s &pager (urgent) <Username> <Message>\" to page someone.\r\n" % (usernick, NICK))
+                    time.sleep(0.2)
+                    ircsock.send(
+                        "PRIVMSG %s Examples:\r\n" % (usernick))
+                    time.sleep(0.2)
+                    ircsock.send(
+                        "PRIVMSG %s \t/msg %s &pager melli17 This is a not so urgent message.\r\n" % (usernick, NICK))
+                    time.sleep(0.2)
+                    ircsock.send(
+                        "PRIVMSG %s \t/msg %s &pager urgent melli17 This is an urgent message!\r\n" % (usernick, NICK))
                     time.sleep(0.5)
                     ircsock.send(
                         "PRIVMSG %s Call %s if you want to add yourself to the pager phonebook.\r\n" % (usernick, OWNERNAME))
