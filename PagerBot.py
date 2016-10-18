@@ -20,7 +20,8 @@ IDENT = "PagerBot"
 REALNAME = "https://github.com/TTYgap/PagerBot/"
 # Channel which should be joined
 CHAN = "#supercoolchan"
-
+# Ask the IRC network administrator what the ping frequency is. Take that and add +5
+timeout = 125
 
 # Mail address you're sending from
 FROM = "ircbot@example.com"
@@ -79,7 +80,9 @@ ircsock.send("USER %s %s no :%s\r\n" % (IDENT, HOST, REALNAME))
 time.sleep(2)
 ircsock.send("MODE %s +B\r\n" % (NICK))
 ircsock.send("JOIN %s\r\n" % (CHAN))
-print("OK\n")
+print("OK - Connected to %s:%s\n" % (HOST, PORT))
+
+last_ping = time.time()
 
 while 1:
     readbuffer = readbuffer + ircsock.recv(1024)
@@ -88,6 +91,9 @@ while 1:
 
     pagingtext = ""
     urgence = False
+    
+    if (time.time() - last_ping) > timeout:
+        raise Exception("PING timeout")
 
     for line in temp:
         line = string.rstrip(line)
@@ -95,6 +101,7 @@ while 1:
 
         if(line[0] == "PING"):
             ircsock.send("PONG %s\r\n" % line[1])
+            last_ping = time.time()
 
         if(line[1] == "PRIVMSG"):
             un = string.split(line[0], "!")
